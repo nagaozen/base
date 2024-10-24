@@ -1,0 +1,20 @@
+name: Publish release from tag
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.PAT_TOKEN}}
+        with:
+          tag_name: ${{github.ref}}
+          release_name: ${{github.ref}}
+          body: |
+            Automatically generated
+          draft: false
+          prerelease: false
