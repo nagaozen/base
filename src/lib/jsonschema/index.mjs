@@ -74,7 +74,13 @@ export async function loadSchema (uri, basepath, { lang, providers } = {}) {
   const protocol = url.protocol.slice(0, -1)
   if (protocol in providers) {
     const schema = await providers[protocol](url.toString())
-    const l10n = await providers[protocol](url.toString().replace('.schema.json', `.${lang}.json`)) ?? {}
+    let l10n = {}
+    try {
+      l10n = await providers[protocol](url.toString().replace('.schema.json', `.${lang}.json`))
+    } catch (e) {
+      // localization doesn't exist, so silently skip.
+      console.log('WHAT ?!')
+    }
     Object.entries(l10n).forEach(([path, value]) => {
       _set(schema, path, value)
     })
