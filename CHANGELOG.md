@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/nagaozen/base/compare/v0.0.4...v0.0.5) (2024-12-03)
+
+
+### Features
+
+* **jsonschema:** implement `options` that reach providers ([b950ef6](https://github.com/nagaozen/base/commit/b950ef60f9c737d9464a110aa48b23e8f538117d))
+
 ### [0.0.4](https://github.com/nagaozen/base/compare/v0.0.3...v0.0.4) (2024-11-27)
 
 
