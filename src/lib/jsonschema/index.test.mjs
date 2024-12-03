@@ -6,7 +6,7 @@ import { load, loadSchema } from './index.mjs'
 describe('# jsonschema', () => {
   describe('## load', () => {
     const mockProviders = {
-      http: async function mockHttpProvider (url) {
+      http: async function mockHttpProvider (url, options) {
         // Mock schema data based on URL
         const schemas = {
           'http://example.com/root.schema.json': {
@@ -34,7 +34,12 @@ describe('# jsonschema', () => {
             'properties.city.description': 'City name'
           }
         }
-        return schemas[url] ?? false
+
+        let schema = schemas[url] ?? false
+        if (schema && options && options.requestId) {
+          schema = { ...schema, requestId: options.requestId }
+        }
+        return schema
       }
     }
 
@@ -114,6 +119,45 @@ describe('# jsonschema', () => {
           message: 'JSONSCHEMA_LOADER_PROTOCOL_FTP_NOT_IMPLEMENTED'
         }
       )
+    })
+
+    it('should forward options to the provider function', async () => {
+      const options = {
+        providers: mockProviders,
+        lang: 'en-US',
+        // other options
+        requestId: 'example'
+      }
+
+      const result = await load('root.schema.json', 'http://example.com/', options)
+      const expectedSchema = {
+        $defs: {
+          'root.schema.json': {
+            $id: 'http://example.com/root.schema.json',
+            type: 'object',
+            properties: {
+              name: { type: 'string', description: 'Full name' },
+              address: {
+                $ref: '#/$defs/address.schema.json',
+                description: 'Address information'
+              }
+            },
+            requestId: 'example'
+          },
+          'address.schema.json': {
+            $id: 'http://example.com/address.schema.json',
+            type: 'object',
+            properties: {
+              street: { type: 'string', description: 'Street name' },
+              city: { type: 'string', description: 'City name' }
+            },
+            requestId: 'example'
+          }
+        },
+        $ref: '#/$defs/root.schema.json'
+      }
+
+      assert.deepStrictEqual(result, expectedSchema)
     })
   })
 

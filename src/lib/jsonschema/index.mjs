@@ -16,7 +16,7 @@ import { typeOf } from '../typeOf.mjs'
  * @returns {Promise<object>} A Promise that resolves to the loaded and resolved JSON schema.
  * @throws {Error} If loading or resolving schemas fails.
  */
-export async function load (uri, basepath, { lang, providers } = {}) {
+export async function load (uri, basepath, { lang, providers, ...otherOptions } = {}) {
   lang = lang ?? 'en-US'
   providers = providers ?? {
     http: async function schemaFromHttp (url) {
@@ -37,7 +37,7 @@ export async function load (uri, basepath, { lang, providers } = {}) {
       } else {
         const key = keyFrom($ref)
         if (!(key in $defs)) {
-          const schema = await loadSchema($ref, basepath, { lang, providers })
+          const schema = await loadSchema($ref, basepath, { lang, providers, ...otherOptions })
           $defs[key] = schema
           await traverse(schema, visitor)
         }
@@ -47,7 +47,7 @@ export async function load (uri, basepath, { lang, providers } = {}) {
   }
   // initialize by loading the root schema
   const key = keyFrom(uri)
-  const root = await loadSchema(uri, basepath, { lang, providers })
+  const root = await loadSchema(uri, basepath, { lang, providers, ...otherOptions })
   $defs[key] = root
   // recursively load requirements
   await traverse(root, visitor)
@@ -69,14 +69,14 @@ export async function load (uri, basepath, { lang, providers } = {}) {
  * @returns {Promise<object>} A Promise that resolves to the loaded schema.
  * @throws {Error} If the protocol is not implemented or loading fails.
  */
-export async function loadSchema (uri, basepath, { lang, providers } = {}) {
+export async function loadSchema (uri, basepath, { lang, providers, ...otherOptions } = {}) {
   const url = new URL(uri, basepath)
   const protocol = url.protocol.slice(0, -1)
   if (protocol in providers) {
-    const schema = await providers[protocol](url.toString())
+    const schema = await providers[protocol](url.toString(), otherOptions)
     let l10n = {}
     try {
-      l10n = await providers[protocol](url.toString().replace('.schema.json', `.${lang}.json`))
+      l10n = await providers[protocol](url.toString().replace('.schema.json', `.${lang}.json`), otherOptions)
     } catch (e) {
       // localization doesn't exist, so silently skip.
     }
