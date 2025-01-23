@@ -1,0 +1,10 @@
+{
+  "$id": "address.schema.json",
+  "type": "object",
+  "properties": {
+    "street": { "type": "string" },
+    "city": { "type": "string" },
+    "country": { "type": "string" }
+  },
+  "required": ["street", "city"]
+}

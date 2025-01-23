@@ -11,13 +11,12 @@ import { typeOf } from '../typeOf.mjs'
  * @param {string} uri - The URI of the root JSON schema to load.
  * @param {string} basepath - The base path to resolve relative URIs.
  * @param {object} [options] - Optional parameters.
- * @param {string} [options.lang='en-US'] - Language code for localization.
+ * @param {string} [options.lang] - Language code for localization.
  * @param {object} [options.providers] - Object mapping protocols to functions that load schemas.
  * @returns {Promise<object>} A Promise that resolves to the loaded and resolved JSON schema.
  * @throws {Error} If loading or resolving schemas fails.
  */
 export async function load (uri, basepath, { lang, providers, ...otherOptions } = {}) {
-  lang = lang ?? 'en-US'
   providers = providers ?? {
     http: async function schemaFromHttp (url) {
       const res = await fetch(url)
@@ -32,7 +31,10 @@ export async function load (uri, basepath, { lang, providers, ...otherOptions } 
   async function visitor (node, path) {
     if (typeOf(node) === 'object' && '$ref' in node) {
       const $ref = node.$ref
-      if ($ref.startsWith('#')) {
+
+      if (typeof $ref !== 'string') {
+        // $ref is not a string, so we can't resolve it - $ref is an attribute, not a reference
+      } else if ($ref.startsWith('#')) {
         // anchors references other schemas on the document itself
       } else {
         const key = keyFrom($ref)

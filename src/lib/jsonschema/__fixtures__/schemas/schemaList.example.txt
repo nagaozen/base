@@ -1,0 +1,3 @@
+root.schema.json
+address.schema.json
+person.schema.json
