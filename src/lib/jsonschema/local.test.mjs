@@ -70,7 +70,7 @@ describe('# jsonschema local loader', () => {
     }
     const basepath = `file://${join(__dirname, '__fixtures__', 'schemas')}/`
     
-    const schemaList = await readFile(join(__dirname, '__fixtures__', 'schemas', 'to-do-resolve.example.txt'), 'utf8')
+    const schemaList = await readFile(join(__dirname, '__fixtures__', 'schemas', 'schemaList.example.txt'), 'utf8')
     const schemas = schemaList
       .split('\n')
     
