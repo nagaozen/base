@@ -30,20 +30,29 @@ export async function load (uri, basepath, { lang, providers, ...otherOptions } 
   function keyFrom ($ref) { return $ref.replaceAll('/', ':') }
   const $defs = {}
   async function visitor (node, path) {
-    if (typeOf(node) === 'object' && '$ref' in node) {
-      const $ref = node.$ref
-      if ($ref.startsWith('#')) {
-        // anchors references other schemas on the document itself
-      } else {
-        const key = keyFrom($ref)
-        if (!(key in $defs)) {
-          const schema = await loadSchema($ref, basepath, { lang, providers, ...otherOptions })
-          $defs[key] = schema
-          await traverse(schema, visitor)
-        }
-        node.$ref = `#/$defs/${key}`
-      }
+    // short-circuit
+    if (typeOf(node) !== 'object') return
+    if (!('$ref' in node)) return
+    const $ref = node.$ref
+    if ($ref.startsWith('#')) return// anchors references other schemas on the document itself
+    /* IMPORTANT:
+      When talking about [JSONSchema](https://json-schema.org/understanding-json-schema/structuring#dollarref), a schema can
+      reference another schema using the `$ref` keyword. The value of `$ref` is a URI-reference that is resolved against the
+      schema's Base URI.
+
+      Yet, sometimes we wan't to also define a `$ref` property for our JSON object to keep complaint with another protocol,
+      e.g. [SCIMv2 Core Schema](https://datatracker.ietf.org/doc/html/rfc7643#section-2.4) where `$ref` is among the default
+      set of sub-attributes for a multi-valued attribute.
+    */
+    if (typeOf($ref) === 'object') return// not a schema reference to another schema, but an object property named $ref.
+    // visit
+    const key = keyFrom($ref)
+    if (!(key in $defs)) {
+      const schema = await loadSchema($ref, basepath, { lang, providers, ...otherOptions })
+      $defs[key] = schema
+      await traverse(schema, visitor)
     }
+    node.$ref = `#/$defs/${key}`
   }
   // initialize by loading the root schema
   const key = keyFrom(uri)
