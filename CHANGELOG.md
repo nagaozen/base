@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/nagaozen/base/compare/v0.0.5...v0.0.6) (2025-02-04)
+
+
+### Bug Fixes
+
+* **jsonschema:** allow schemas to define objects with `$ref` property ([3572f5d](https://github.com/nagaozen/base/commit/3572f5dc84348b5b52a165baf91f51d1534e3bfc))
+
 ### [0.0.5](https://github.com/nagaozen/base/compare/v0.0.4...v0.0.5) (2024-12-03)
 
 
