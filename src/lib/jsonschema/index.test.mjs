@@ -32,6 +32,16 @@ describe('# jsonschema', () => {
           'http://example.com/address.en-US.json': {
             'properties.street.description': 'Street name',
             'properties.city.description': 'City name'
+          },
+          'http://example.com/scim.schema.json': {
+            $id: 'http://example.com/scim.schema.json',
+            type: 'object',
+            properties: {
+              $ref: {
+                type: 'string',
+                format: 'uri'
+              }
+            }
           }
         }
 
@@ -155,6 +165,34 @@ describe('# jsonschema', () => {
           }
         },
         $ref: '#/$defs/root.schema.json'
+      }
+
+      assert.deepStrictEqual(result, expectedSchema)
+    })
+
+    it('should resolve $ref as jsonschema properties', async () => {
+      const options = {
+        providers: mockProviders,
+        lang: 'en-US',
+        // other options
+        requestId: 'example'
+      }
+      const result = await load('scim.schema.json', 'http://example.com/', options)
+      const expectedSchema = {
+        $defs: {
+          'scim.schema.json': {
+            $id: 'http://example.com/scim.schema.json',
+            type: 'object',
+            properties: {
+              $ref: {
+                type: 'string',
+                format: 'uri'
+              }
+            },
+            requestId: 'example'
+          }
+        },
+        $ref: '#/$defs/scim.schema.json'
       }
 
       assert.deepStrictEqual(result, expectedSchema)
