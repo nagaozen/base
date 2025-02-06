@@ -34,6 +34,7 @@ export async function load (uri, basepath, { lang, providers, ...otherOptions } 
     if (typeOf(node) !== 'object') return
     if (!('$ref' in node)) return
     const $ref = node.$ref
+    if (typeOf($ref) !== 'string') return// not a schema reference to another schema.
     if ($ref.startsWith('#')) return// anchors references other schemas on the document itself
     /* IMPORTANT:
       When talking about [JSONSchema](https://json-schema.org/understanding-json-schema/structuring#dollarref), a schema can
@@ -44,7 +45,6 @@ export async function load (uri, basepath, { lang, providers, ...otherOptions } 
       e.g. [SCIMv2 Core Schema](https://datatracker.ietf.org/doc/html/rfc7643#section-2.4) where `$ref` is among the default
       set of sub-attributes for a multi-valued attribute.
     */
-    if (typeOf($ref) === 'object') return// not a schema reference to another schema, but an object property named $ref.
     // visit
     const key = keyFrom($ref)
     if (!(key in $defs)) {
