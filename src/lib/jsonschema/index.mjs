@@ -34,7 +34,6 @@ export async function load (uri, basepath, { lang, providers, ...otherOptions } 
   // recursively load requirements
   await traverse(root, visitor)
   // always return a referenced schema to handle recursive/circular case
-  console.log(JSON.stringify({ $defs, $ref: `#/$defs/${key}` }))
   return { $defs, $ref: `#/$defs/${key}` }
   // helpers
   function keyFrom ($ref) { return $ref.replaceAll('/', ':') }
