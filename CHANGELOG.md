@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/nagaozen/base/compare/v0.0.7...v0.0.8) (2025-04-03)
+
+
+### Features
+
+* **jsonschema:** local definitions → global definitions on `load` ([95f3a42](https://github.com/nagaozen/base/commit/95f3a42feaa3148f09677b6f411f2cab7df5911b))
+
 ### [0.0.7](https://github.com/nagaozen/base/compare/v0.0.6...v0.0.7) (2025-02-06)
 
 
