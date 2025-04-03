@@ -26,42 +26,57 @@ export async function load (uri, basepath, { lang, providers, ...otherOptions } 
       return schema
     }
   }
-  // helpers
-  function keyFrom ($ref) { return $ref.replaceAll('/', ':') }
-  const $defs = {}
-  async function visitor (node, path) {
-    // short-circuit
-    if (typeOf(node) !== 'object') return
-    if (!('$ref' in node)) return
-    const $ref = node.$ref
-    if (typeOf($ref) !== 'string') return// not a schema reference to another schema.
-    if ($ref.startsWith('#')) return// anchors references other schemas on the document itself
-    /* IMPORTANT:
-      When talking about [JSONSchema](https://json-schema.org/understanding-json-schema/structuring#dollarref), a schema can
-      reference another schema using the `$ref` keyword. The value of `$ref` is a URI-reference that is resolved against the
-      schema's Base URI.
-
-      Yet, sometimes we wan't to also define a `$ref` property for our JSON object to keep complaint with another protocol,
-      e.g. [SCIMv2 Core Schema](https://datatracker.ietf.org/doc/html/rfc7643#section-2.4) where `$ref` is among the default
-      set of sub-attributes for a multi-valued attribute.
-    */
-    // visit
-    const key = keyFrom($ref)
-    if (!(key in $defs)) {
-      const schema = await loadSchema($ref, basepath, { lang, providers, ...otherOptions })
-      $defs[key] = schema
-      await traverse(schema, visitor)
-    }
-    node.$ref = `#/$defs/${key}`
-  }
   // initialize by loading the root schema
+  const $defs = {}
   const key = keyFrom(uri)
   const root = await loadSchema(uri, basepath, { lang, providers, ...otherOptions })
   $defs[key] = root
   // recursively load requirements
   await traverse(root, visitor)
   // always return a referenced schema to handle recursive/circular case
+  console.log(JSON.stringify({ $defs, $ref: `#/$defs/${key}` }))
   return { $defs, $ref: `#/$defs/${key}` }
+  // helpers
+  function keyFrom ($ref) { return $ref.replaceAll('/', ':') }
+  async function visitor (node, path) {
+    // short-circuit
+    if (typeOf(node) !== 'object') return
+    if (!('$ref' in node || '$defs' in node)) return
+    if ('$ref' in node) {
+      const $ref = node.$ref
+      /* IMPORTANT:
+        When talking about [JSONSchema](https://json-schema.org/understanding-json-schema/structuring#dollarref), a schema can
+        reference another schema using the `$ref` keyword. The value of `$ref` is a URI-reference that is resolved against the
+        schema's Base URI.
+        Yet, sometimes we wan't to also define a `$ref` property for our JSON object to keep complaint with another protocol,
+        e.g. [SCIMv2 Core Schema](https://datatracker.ietf.org/doc/html/rfc7643#section-2.4) where `$ref` is among the default
+        set of sub-attributes for a multi-valued attribute.
+      */
+      if (typeOf($ref) !== 'string') return// not a schema reference to another schema.
+      if ($ref.startsWith('#')) {
+        // anchors references on the document itself
+        const key = `${keyFrom(uri)}:${keyFrom($ref.substring(2))}`
+        node.$ref = `#/$defs/${key}`
+        return
+      }
+      // visit
+      const key = keyFrom($ref)
+      if (!(key in $defs)) {
+        const schema = await loadSchema($ref, basepath, { lang, providers, ...otherOptions })
+        $defs[key] = schema
+        await traverse(schema, visitor)
+      }
+      node.$ref = `#/$defs/${key}`
+    }
+    if ('$defs' in node) {
+      const localDefs = Object.keys(node.$defs)
+      localDefs.forEach(def => {
+        const key = `${keyFrom(uri)}:$defs:${def}`
+        $defs[key] = node.$defs[def]
+      })
+      delete node.$defs
+    }
+  }
 }
 
 /**

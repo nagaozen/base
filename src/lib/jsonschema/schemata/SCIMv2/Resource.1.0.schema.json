@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "A unique identifier for a SCIM resource as defined by the service provider."
+    },
+    "externalId": {
+      "type": "string",
+      "description": "A String that is an identifier for the resource as defined by the provisioning client."
+    },
+    "meta": {
+      "$ref": "schemata/SCIMv2/Meta.1.0.schema.json"
+    }
+  },
+  "required": []
+}
