@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/nagaozen/base/compare/v0.0.8...v0.0.9) (2025-04-03)
+
+
+### Bug Fixes
+
+* **jsonschema:** remove console.log from `load` ([859383b](https://github.com/nagaozen/base/commit/859383b27e40e86c69ca1ddb32a8e7ae958b8c64))
+
 ### [0.0.8](https://github.com/nagaozen/base/compare/v0.0.7...v0.0.8) (2025-04-03)
 
 
