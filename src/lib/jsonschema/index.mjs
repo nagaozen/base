@@ -103,9 +103,15 @@ export async function loadSchema (uri, basepath, { lang, providers, ...otherOpti
     } catch (e) {
       // localization doesn't exist, so silently skip.
     }
-    Object.entries(l10n).forEach(([path, value]) => {
-      _set(schema, path, value)
-    })
+    if (Array.isArray(l10n)) {
+      l10n.forEach(({ path, value }) => {
+        _set(schema, path, value)
+      })
+    } else {
+      Object.entries(l10n).forEach(([path, value]) => {
+        _set(schema, path, value)
+      })
+    }
     return schema
   }
   throw new Error(`JSONSCHEMA_LOADER_PROTOCOL_${protocol.toUpperCase()}_NOT_IMPLEMENTED`)
