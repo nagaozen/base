@@ -20,6 +20,20 @@ export function asciiFrom (str) {
 }
 
 /**
+ * Converts a given string to its "const-like" format.
+ *
+ * This function converts the string to uppercase and replaces spaces with underscores.
+ *
+ * @param {string} str - The string to be converted to constant format.
+ * @returns {string} The constant format string.
+ */
+export function constFrom (str) {
+  return asciiFrom(str)
+    .toUpperCase()
+    .replace(/\s+/g, '_')
+}
+
+/**
  * Converts a given string to camel case.
  *
  * Camel case is a string format where each word after the first is capitalized and all words are joined together without spaces.
