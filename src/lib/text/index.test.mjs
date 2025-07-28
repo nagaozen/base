@@ -3,6 +3,7 @@ import assert from 'node:assert'
 
 import {
   asciiFrom,
+  constFrom,
   camelCaseFrom,
   kebabCaseFrom,
   pascalCaseFrom,
@@ -27,6 +28,14 @@ describe('# text', () => {
 
     it('should remove diatrics', () => {
       assert.strictEqual(asciiFrom('áéíóú âêîôû àèìòù ãõñ äëïöü ç'), 'aeiou aeiou aeiou aon aeiou c')
+    })
+  })
+
+  describe('## constFrom', () => {
+    it('should convert a string to constant format', async () => {
+      assert.strictEqual(constFrom('Hello World'), 'HELLO_WORLD')
+      assert.strictEqual(constFrom('  multiple   spaces  '), 'MULTIPLE_SPACES')
+      assert.strictEqual(constFrom('Special!@# Chars'), 'SPECIAL_CHARS')
     })
   })
 

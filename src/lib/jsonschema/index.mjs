@@ -92,7 +92,7 @@ export async function load (uri, basepath, { lang, providers, ...otherOptions } 
  * @returns {Promise<object>} A Promise that resolves to the loaded schema.
  * @throws {Error} If the protocol is not implemented or loading fails.
  */
-export async function loadSchema (uri, basepath, { lang, providers, ...otherOptions } = {}) {
+export async function loadSchema (uri, basepath, { lang, providers, ...otherOptions }) {
   const url = new URL(uri, basepath)
   const protocol = url.protocol.slice(0, -1)
   if (protocol in providers) {
