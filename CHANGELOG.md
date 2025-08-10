@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.11](https://github.com/nagaozen/base/compare/v0.0.10...v0.0.11) (2025-08-10)
+
+
+### Features
+
+* **functions:** implement `memoize` ([5122df3](https://github.com/nagaozen/base/commit/5122df34e7cdd76db4b85637638b04e981e50308))
+* **jsonpointer:** implement rfc6901 ([d7571b3](https://github.com/nagaozen/base/commit/d7571b3fe8a59cae0b5d25d43aec85b99fddc87d))
+* **text:** add `constFrom` ([3715f59](https://github.com/nagaozen/base/commit/3715f59b6f13c3189a6b26dbf0bad22b9559000c))
+
+
+### Bug Fixes
+
+* **jsonschema:** remove default options ([d8dd752](https://github.com/nagaozen/base/commit/d8dd75294074168e5dc0a73ef5b96d93e0019eae))
+
 ### [0.0.10](https://github.com/nagaozen/base/compare/v0.0.9...v0.0.10) (2025-04-14)
 
 
