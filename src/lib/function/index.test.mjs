@@ -220,8 +220,8 @@ describe('# function', () => {
         const f = memoize(function (x) { return this.k * x })
         const a = { k: 2, f }
         const b = { k: 10, f }
-        assert.strictEqual(a.f(3), 6)   // caches under args [3]
-        assert.strictEqual(b.f(3), 6)   // reuses cache; not 30
+        assert.strictEqual(a.f(3), 6) // caches under args [3]
+        assert.strictEqual(b.f(3), 6) // reuses cache; not 30
       })
     })
 
@@ -262,7 +262,7 @@ describe('# function', () => {
         await setTimeout(25)
         assert.strictEqual(f(10), 11) // still fresh
         assert.strictEqual(calls, 1)
-        await setTimeout(25)               // total ~50ms
+        await setTimeout(25) // total ~50ms
         assert.strictEqual(f(10), 11) // recomputed
         assert.strictEqual(calls, 2)
       })

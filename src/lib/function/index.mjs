@@ -137,12 +137,10 @@ export function memoize (fn, { ttl = 0 } = {}) {
         node.result = undefined
         removed++
       }
-
       if (parent && !node.result && node.p.size === 0) parent.p.delete(key)
     }
     return removed
   }
-
   return memoized
 }
 
