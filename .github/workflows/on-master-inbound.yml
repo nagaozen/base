@@ -1,7 +1,10 @@
 name: Continuous integration
 on:
+  push:
+    branches: [ "master" ]
   pull_request:
-    branches: [master]
+    branches: [ "master" ]
+  workflow_dispatch:  # Allows manual triggering
 jobs:
   test_pull_request:
     runs-on: ubuntu-latest
