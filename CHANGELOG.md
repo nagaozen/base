@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.12](https://github.com/nagaozen/base/compare/v0.0.11...v0.0.12) (2026-05-29)
+
+
+### Features
+
+* **net:** implement `createConfidentialClient` and `resilientFetch` hardening ([d96abe9](https://github.com/nagaozen/base/commit/d96abe99fcd23361c7a73ef584d95c776de16283))
+
 ### [0.0.11](https://github.com/nagaozen/base/compare/v0.0.10...v0.0.11) (2025-08-10)
 
 
