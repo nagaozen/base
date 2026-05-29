@@ -19,7 +19,7 @@ import { typeOf } from '../typeOf.mjs'
 export async function load (uri, basepath, { lang, providers, ...otherOptions } = {}) {
   lang = lang ?? 'en-US'
   providers = providers ?? {
-    http: async function schemaFromHttp (url) {
+    https: async function schemaFromHttp (url) {
       const res = await fetch(url)
       if (!res.ok) throw new Error(`HTTP_${res.status}`)
       const schema = await res.json()
@@ -96,10 +96,12 @@ export async function loadSchema (uri, basepath, { lang, providers, ...otherOpti
   const url = new URL(uri, basepath)
   const protocol = url.protocol.slice(0, -1)
   if (protocol in providers) {
-    const schema = await providers[protocol](url.toString(), otherOptions)
+    const schema = await providers[protocol](url, otherOptions)
     let l10n = {}
     try {
-      l10n = await providers[protocol](url.toString().replace('.schema.json', `.${lang}.json`), otherOptions)
+      const clone = new URL(url)
+      clone.pathname = clone.pathname.replace('.schema.json', `.${lang}.json`)
+      l10n = await providers[protocol](clone, otherOptions)
     } catch (e) {
       // localization doesn't exist, so silently skip.
     }
