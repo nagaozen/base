@@ -304,8 +304,12 @@ function assertRelativePath (path) {
 }
 
 function buildTrustedURL (baseURL, path) {
-  const url = new URL(path, baseURL)
   const base = new URL(baseURL)
+  if (!base.pathname.endsWith('/')) base.pathname += '/'
+
+  const relativePath = path.replace(/^\/+/, '')
+  const url = new URL(relativePath, base)
+
   if (url.origin !== base.origin) throw new Error('REQUEST_ORIGIN_MISMATCH')
   return url
 }
