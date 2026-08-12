@@ -25,7 +25,7 @@ export function isCnpj (cnpj) {
   ) return false
   return true
   function expectedDigit (b, w) {
-    const weightedSum = b.reduce((Σ, d, i) => Σ + (char.charCodeAt(0) - 48) * w[i], 0)
+    const weightedSum = [...b].reduce((Σ, c, i) => Σ + (c.charCodeAt(0) - 48) * w[i], 0)
     const remainder = weightedSum % 11
     if (remainder <= 1) return 0
     return 11 - remainder
