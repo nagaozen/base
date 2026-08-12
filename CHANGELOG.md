@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.14](https://github.com/nagaozen/base/compare/v0.0.13...v0.0.14) (2026-08-12)
+
+
+### Features
+
+* **net:** allow `baseURL` to keep path segments ([8e00a73](https://github.com/nagaozen/base/commit/8e00a73f9fa06a967880f0f307d68529bf6071dc))
+* **validator:** extend `isCnpj` to allow new alphanumeric format ([330d939](https://github.com/nagaozen/base/commit/330d93976f88baef457aa0ea8070e80dbe6b3787))
+
+
+### Bug Fixes
+
+* **validator:** `.replace(/\D/gim, ')` → `.replace(/[^\w]/gim, ').toUpperCase()` ([74ae662](https://github.com/nagaozen/base/commit/74ae6627811c2cecced4df6517ccd0869e1999c8))
+* **validator:** `isCnpj` typo ([4a2a7ca](https://github.com/nagaozen/base/commit/4a2a7ca04d8c77539ad6151a5e15414e9e09fd23))
+
 ### [0.0.13](https://github.com/nagaozen/base/compare/v0.0.12...v0.0.13) (2026-05-29)
 
 ### [0.0.12](https://github.com/nagaozen/base/compare/v0.0.11...v0.0.12) (2026-05-29)

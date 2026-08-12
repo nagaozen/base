@@ -1,6 +1,6 @@
 {
   "name": "@nagaozen/base",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Lightweight, modern, grouped javascript toolset.",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.mjs",
@@ -24,7 +24,7 @@
     "test": "node --test",
     "prepare": "husky",
     "commit": "cz",
-    "release": "(standard-version) -and (git push --follow-tags origin master)"
+    "release": "(standard-version) && (git push --follow-tags origin master)"
   },
   "keywords": [],
   "author": "Fabio Zendhi Nagao",
