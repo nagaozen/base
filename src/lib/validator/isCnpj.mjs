@@ -11,7 +11,7 @@
 export function isCnpj (cnpj) {
   const str = String(cnpj)
   if (str.length > 18) return false
-  const s = str.replace(/\D/gim, '').toUpperCase()
+  const s = str.replace(/[^\w]/gim, '').toUpperCase()
   if (s.length !== 14) return false
   if (!/\d/.test(s[12]) || !/\d/.test(s[13])) return false
   if (s === s[0].repeat(14)) return false
